@@ -1,0 +1,4 @@
+.gitignore
+.env
+#Mac 
+.DS_Store
