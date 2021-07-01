@@ -10,7 +10,7 @@ services:
       - .env
 
     volumes:
-      - ./data/db-data/:/var/lib/postgresql/data
+      - ./data/db-data/:/var/lib/postgresql/data1
     networks:
       - postgres
     restart: unless-stopped
