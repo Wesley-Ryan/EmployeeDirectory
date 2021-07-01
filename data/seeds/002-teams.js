@@ -8,7 +8,7 @@ exports.seed = function (knex) {
         { department_id: 0400, name: "IT" },
         { department_id: 0300, name: "Sales" },
         { department_id: 0200, name: "Operations" },
-        { department_id: 0200, name: "Engineering" },
+        { department_id: 0100, name: "Engineering" },
       ]);
     });
 };

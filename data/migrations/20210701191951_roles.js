@@ -14,6 +14,8 @@ exports.up = function (knex) {
       users.string("last_name", 255).notNullable();
       users.string("email", 255).notNullable().unique();
       users.string("password", 255).notNullable();
+      users.string("title", 255);
+      users.string("salary");
       users
         .integer("role")
         .unsigned()
@@ -36,7 +38,7 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
   return knex.schema
-    .dropTableIfExists("roles")
     .dropTableIfExists("users")
+    .dropTableIfExists("roles")
     .dropTableIfExists("departments");
 };

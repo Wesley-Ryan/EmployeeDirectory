@@ -6,8 +6,8 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex("roles").insert([
         { role_id: 1328, name: "Administrator" },
-        { role_id: 2, colName: "Manager" },
-        { role_id: 3, colName: "Team Member" },
+        { role_id: 2399, name: "Manager" },
+        { role_id: 3893, name: "Team Member" },
       ]);
     });
 };
