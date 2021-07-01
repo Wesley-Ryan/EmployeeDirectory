@@ -1,4 +1,5 @@
 function buildUser(user, type, hashedPassword) {
+  console.log("BUILD USER", user);
   switch (type) {
     case "Administrator": {
       return {

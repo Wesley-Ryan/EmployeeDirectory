@@ -14,7 +14,7 @@ exports.seed = function (knex) {
           title: "Fake worker",
           salary: "$0",
           role: 3893,
-          department: 0200,
+          department: 200,
           pinpoint: 0,
         },
       ]);

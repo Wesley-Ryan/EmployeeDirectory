@@ -5,10 +5,10 @@ exports.seed = function (knex) {
     .then(function () {
       // Inserts seed entries
       return knex("departments").insert([
-        { department_id: 0400, name: "IT" },
-        { department_id: 0300, name: "Sales" },
-        { department_id: 0200, name: "Operations" },
-        { department_id: 0100, name: "Engineering" },
+        { department_id: 400, name: "IT" },
+        { department_id: 300, name: "Sales" },
+        { department_id: 200, name: "Operations" },
+        { department_id: 100, name: "Engineering" },
       ]);
     });
 };
