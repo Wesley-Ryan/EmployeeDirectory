@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
 
   pgadmin:
-    container_name: pgadmin
+    container_name: side-auth_pgadmin
     image: dpage/pgadmin4
     depends_on:
       - database
