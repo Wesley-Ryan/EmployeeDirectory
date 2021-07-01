@@ -4,7 +4,7 @@ dotenv.config();
 module.exports = {
   development: {
     client: "pg",
-    connection: "postgres://bellaCommander:BellaBella@localhost:5432/EBEE",
+    connection: process.env.CONNECTION,
     migrations: { directory: "./data/migrations" },
     seeds: { directory: "./data/seeds" },
     pool: {
