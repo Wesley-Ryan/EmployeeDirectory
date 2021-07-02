@@ -1,9 +1,13 @@
 const express = require("express");
 const registerUser = require("../auth/registerUser.js");
+const authorizeUser = require("../auth/authorizeUser.js");
+
 const {
   validateRegisterBody,
   validateUsernameUnique,
+  validateLoginPayload,
 } = require("../middlewares/validationMiddleware.js");
+
 const router = express.Router();
 
 router.post(
@@ -25,5 +29,23 @@ router.post(
     }
   }
 );
+
+router.post("/login", validateLoginPayload, async (req, res) => {
+  try {
+    const { isAuthorized, currentUser, message } = await authorizeUser(
+      req.User
+    );
+    if (isAuthorized) {
+      console.log("Golden", message);
+    } else {
+      console.log("Not Golden", message);
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error on Server, login failed.",
+      error_message: error.message,
+    });
+  }
+});
 
 module.exports = router;
