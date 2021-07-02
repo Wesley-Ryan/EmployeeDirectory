@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 const Helper = require("../models/userModel.js");
 const SessionHelper = require("../models/sessionModel.js");
 
