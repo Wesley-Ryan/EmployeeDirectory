@@ -5,6 +5,10 @@ module.exports = {
     const all = await db("users");
     return all.map((each) => ({ ...each, password: "" }));
   },
+  async getAllUsersByDepartment(department) {
+    const all = await db("users").where("department", department);
+    return all.map((each) => ({ ...each, password: "" }));
+  },
   findUserByEmail(email) {
     return db("users").where("email", email);
   },

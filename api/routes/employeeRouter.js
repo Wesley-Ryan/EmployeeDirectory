@@ -22,7 +22,7 @@ router.get(
             "You must be the department manager to view these employees. Contact support for more information.",
         });
       } else {
-        const employees = await UserHelper.getAllUsers();
+        const employees = await UserHelper.getAllUsersByDepartment(department);
         res.status(200).json({ message: "Success", data: employees });
       }
     } catch (error) {
