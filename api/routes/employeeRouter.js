@@ -1,10 +1,14 @@
 const express = require("express");
-const { validator } = require("../middlewares/validationMiddleware.js");
+const {
+  validator,
+  validateManager,
+} = require("../middlewares/validationMiddleware.js");
 const UserHelper = require("../models/userModel.js");
 
 const router = express.Router();
 
-router.get("/employees", validator, async (req, res) => {
+//get all employees should be only manager
+router.get("/employees", validator, validateManager, async (req, res) => {
   try {
     const employees = await UserHelper.getAllUsers();
     res.status(200).json({ message: "Success", data: employees });

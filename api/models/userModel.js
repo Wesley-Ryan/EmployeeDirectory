@@ -32,6 +32,6 @@ module.exports = {
   },
 
   findRole(role) {
-    return db("roles").where("name", role);
+    return db("roles").where("role_id", role);
   },
 };

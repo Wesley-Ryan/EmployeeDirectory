@@ -74,15 +74,15 @@ const validator = async (req, res, next) => {
   }
 };
 
-async function validateAdmin(req, res, next) {
+async function validateManager(req, res, next) {
   try {
     const { role } = req.Decoded;
     //compare role to pg roles table
     const [authorizedRole] = await Helper.findRole(role);
-    if (authorizedRole.name != "Administrator") {
+    console.log(authorizedRole.name);
+    if (authorizedRole.name != "Manager") {
       res.status(401).json({
-        message:
-          "Unauthorized access, you must be an administrator. Please contact your account manager.",
+        message: "Unauthorized access. Please contact your account manager.",
       });
     } else {
       next();
@@ -99,4 +99,5 @@ module.exports = {
   validateLoginPayload,
   validateUsernameUnique,
   validator,
+  validateManager,
 };
