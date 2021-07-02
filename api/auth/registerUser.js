@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const UserHelper = require("../models/userModel.js");
 
 const { genSalt, hash } = bcrypt;
-async function registerUser(user, type) {
+async function registerUser(user) {
   try {
     const salt = await genSalt(11);
     const hashedPassword = await hash(user.password, salt);

@@ -16,9 +16,7 @@ router.post(
   validateUsernameUnique,
   async (req, res) => {
     try {
-      let userType = "";
-      req.User.role ? (userType = req.User.role) : (userType = "Team Member");
-      const result = await registerUser(req.User, userType);
+      const result = await registerUser(req.User);
       console.log("RESULT", result);
       res.status(201).json({ message: result });
     } catch (error) {
@@ -36,9 +34,9 @@ router.post("/login", validateLoginPayload, async (req, res) => {
       req.User
     );
     if (isAuthorized) {
-      console.log("Golden", message);
+      console.log("Golden,", message);
     } else {
-      console.log("Not Golden", message);
+      console.log("Not Golden,", message);
     }
   } catch (error) {
     res.status(500).json({
