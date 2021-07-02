@@ -1,8 +1,9 @@
 const db = require("../../data/db-config");
 
 module.exports = {
-  getAllUsers() {
-    return db("users");
+  async getAllUsers() {
+    const all = await db("users");
+    return all.map((each) => ({ ...each, password: "" }));
   },
   findUserByEmail(email) {
     return db("users").where("email", email);
