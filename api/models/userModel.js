@@ -29,4 +29,8 @@ module.exports = {
       throw new Error(error.message);
     }
   },
+
+  findRole(role) {
+    return db("roles").where("name", role);
+  },
 };

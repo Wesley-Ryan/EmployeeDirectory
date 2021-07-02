@@ -1,4 +1,5 @@
 const Helper = require("../models/userModel.js");
+const SessionHelper = require("../models/sessionModel.js");
 
 async function validateLoginPayload(req, res, next) {
   try {
@@ -48,12 +49,35 @@ async function validateUsernameUnique(req, res, next) {
   }
 }
 
+const validator = async (req, res, next) => {
+  try {
+    const token = req.cookies.MNTN_Corp;
+    if (!token) {
+      res.status(401).json("Token required, you must be logged in.");
+    } else {
+      const decoded = await jwt.verify(token, process.env.SECRET);
+      const [activeSession] = await SessionHelper.findSessionByID(decoded.id);
+      if (activeSession) {
+        req.Decoded = decoded;
+        req.UserId = decoded.id;
+        next();
+      } else {
+        res.status(401).json("Token required, you must be logged in.");
+      }
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error validating access", error_msg: error.message });
+  }
+};
+
 async function validateAdmin(req, res, next) {
   try {
     const { role } = req.Decoded;
     //compare role to pg roles table
     const [authorizedRole] = await Helper.findRole(role);
-    if (authorizedRole.name != "Admin") {
+    if (authorizedRole.name != "Administrator") {
       res.status(401).json({
         message:
           "Unauthorized access, you must be an administrator. Please contact your account manager.",
@@ -72,5 +96,5 @@ module.exports = {
   validateRegisterBody,
   validateLoginPayload,
   validateUsernameUnique,
-  validateAdmin,
+  validator,
 };
