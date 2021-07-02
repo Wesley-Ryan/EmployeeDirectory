@@ -14,6 +14,8 @@ exports.up = function (knex) {
       users.string("last_name", 255).notNullable();
       users.string("email", 255).notNullable().unique();
       users.string("password", 255).notNullable();
+      users.integer("login_attempts");
+
       users.string("title", 255);
       users.string("salary");
       users
@@ -33,6 +35,7 @@ exports.up = function (knex) {
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
       users.integer("pinpoint");
+      users.boolean("active").notNullable().defaultTo(1);
     });
 };
 
