@@ -7,7 +7,7 @@ function generateToken(user) {
     role: user.role,
   };
   const options = {
-    expiresIn: "4hr",
+    expiresIn: "6hr",
   };
   return jwt.sign(payload, process.env.SECRET, options);
 }
@@ -17,7 +17,7 @@ function generateRefreshToken(token) {
     id: token,
   };
   const options = {
-    expiresIn: "4hr",
+    expiresIn: "6hr",
   };
   return jwt.sign(payload, process.env.SECRET, options);
 }

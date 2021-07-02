@@ -11,11 +11,13 @@ exports.seed = function (knex) {
           last_name: "user",
           email: "fakeaccount",
           password: "reallysomethingelse",
+          login_attempts: 0,
           title: "Fake worker",
           salary: "$0",
           role: 3893,
-          department: 0200,
+          department: 200,
           pinpoint: 0,
+          active: true,
         },
       ]);
     });
