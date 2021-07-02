@@ -36,11 +36,28 @@ exports.up = function (knex) {
         .onDelete("CASCADE");
       users.integer("pinpoint");
       users.boolean("active").notNullable().defaultTo(1);
+    })
+    .createTable("sessions", (session) => {
+      session.string("id").notNullable();
+      session
+        .integer("user_id")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+      session.boolean("valid").notNullable().defaultTo(0);
+      session.string("user_agent").notNullable();
+      session.string("ip").notNullable();
+      session.date("created_at").notNullable();
+      session.integer("expires").notNullable();
     });
 };
 
 exports.down = function (knex) {
   return knex.schema
+    .dropTableIfExists("sessions")
     .dropTableIfExists("users")
     .dropTableIfExists("roles")
     .dropTableIfExists("departments");
