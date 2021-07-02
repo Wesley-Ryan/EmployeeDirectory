@@ -7,7 +7,7 @@ const UserHelper = require("../models/userModel.js");
 
 const router = express.Router();
 
-//get all employees should be only manager
+//get all employees of department if you are the manager of department
 router.get(
   "/employees/:department",
   validator,

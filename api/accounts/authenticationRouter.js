@@ -7,7 +7,10 @@ const {
   validateRegisterBody,
   validateUsernameUnique,
   validateLoginPayload,
+  validator,
 } = require("../middlewares/validationMiddleware.js");
+
+const SessionHelper = require("../models/sessionModel.js");
 
 const router = express.Router();
 
@@ -45,6 +48,19 @@ router.post("/login", validateLoginPayload, async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Error on Server, login failed.",
+      error_message: error.message,
+    });
+  }
+});
+
+router.post("/logout", validator, async (req, res) => {
+  const id = req.UserId;
+  try {
+    await SessionHelper.removeSession(id);
+    res.status(201).json({ message: "Good Bye" });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error on Server, session deletion failed.",
       error_message: error.message,
     });
   }
