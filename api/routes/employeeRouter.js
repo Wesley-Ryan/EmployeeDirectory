@@ -33,4 +33,37 @@ router.get(
   }
 );
 
+//account update
+router.put("/account/:userId", validator, async (req, res) => {
+  const { userId } = req.params;
+  const userAccount = parseInt(userId);
+  const { role, id } = req.Decoded;
+  const changes = req.body;
+
+  try {
+    const [user] = await UserHelper.findUserByID(userId);
+    if (!user) {
+      res.status(400).json({
+        message:
+          "Requested User does not exist, please be sure the email is correct.",
+      });
+    } else if (id === userAccount || role === 1328) {
+      const updatedUser = await UserHelper.updateUser(id, changes);
+      res
+        .status(201)
+        .json({ message: "Account updated successfully.", data: updatedUser });
+    } else {
+      res.status(401).json({
+        message: "You do not have permission to edit this account.",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Error on Server, changes not accepted please contact support with error message.",
+      error_message: error.message,
+    });
+  }
+});
+
 module.exports = router;
