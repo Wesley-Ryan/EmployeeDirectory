@@ -8,6 +8,8 @@ const {
   validateUsernameUnique,
   validateLoginPayload,
   validator,
+  validateUserRecovery,
+  validatePasswordReset,
 } = require("../middlewares/validationMiddleware.js");
 
 const SessionHelper = require("../models/sessionModel.js");
@@ -65,5 +67,22 @@ router.post("/logout", validator, async (req, res) => {
     });
   }
 });
+
+//create and send password reset code.
+router.post("/account/send/help", validateUserRecovery, (req, res) => {
+  res
+    .status(200)
+    .json({ message: "Success, please check your email account." });
+});
+
+//verify code and reset pw
+router.post(
+  "/account/recovery/challenge",
+  validatePasswordReset,
+  (req, res) => {
+    const user = req.User;
+    res.status(200).json({ message: "Password reset success, please login." });
+  }
+);
 
 module.exports = router;

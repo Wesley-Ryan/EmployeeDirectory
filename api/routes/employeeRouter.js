@@ -33,4 +33,87 @@ router.get(
   }
 );
 
+//get all accounts ADMIN ONLY
+router.get("/admin/employees/all", validator, async (req, res) => {
+  const { role } = req.Decoded;
+
+  try {
+    if (role === 1328) {
+      const employees = await UserHelper.getAllUsers();
+      res.status(200).json({ message: "Success", data: employees });
+    } else {
+      res.status(401).json({
+        message:
+          "You do not have access to this area. Please contact support. ",
+      });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Server Error", error_message: error.message });
+  }
+});
+
+//get 1 account
+
+router.get("/account/:userId", validator, async (req, res) => {
+  const { userId } = req.params;
+  const userAccount = parseInt(userId);
+  const { role, id } = req.Decoded;
+
+  try {
+    const [user] = await UserHelper.findUserByID(userAccount);
+    if (!user) {
+      res.status(400).json({
+        message: "Requested User does not exist.",
+      });
+    } else if (id === userAccount || role < 3893) {
+      res.status(200).json({ message: "Success", data: user });
+    } else {
+      res.status(401).json({
+        message: "You do not have permission to access this account.",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Error on Server, changes not accepted please contact support with error message.",
+      error_message: error.message,
+    });
+  }
+});
+
+//account update
+router.put("/account/:userId", validator, async (req, res) => {
+  const { userId } = req.params;
+  const userAccount = parseInt(userId);
+  const { role, id } = req.Decoded;
+  const changes = req.body;
+
+  try {
+    const [user] = await UserHelper.findUserByID(userId);
+    if (!user) {
+      res.status(400).json({
+        message:
+          "Requested User does not exist, please be sure the email is correct.",
+      });
+    } else if (id === userAccount || role === 1328) {
+      const updatedUser = await UserHelper.updateUser(id, changes);
+      res
+        .status(201)
+        .json({ message: "Account updated successfully.", data: updatedUser });
+    } else {
+      res.status(401).json({
+        message: "You do not have permission to edit this account.",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Error on Server, changes not accepted please contact support with error message.",
+      error_message: error.message,
+    });
+  }
+});
+
 module.exports = router;
