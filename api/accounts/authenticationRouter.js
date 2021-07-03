@@ -81,7 +81,7 @@ router.post(
   validatePasswordReset,
   (req, res) => {
     const user = req.User;
-    res.status(200).json(user);
+    res.status(200).json({ message: "Password reset success, please login." });
   }
 );
 
