@@ -33,6 +33,27 @@ router.get(
   }
 );
 
+//get all accounts ADMIN ONLY
+router.get("/admin/employees/all", validator, async (req, res) => {
+  const { role } = req.Decoded;
+
+  try {
+    if (role === 1328) {
+      const employees = await UserHelper.getAllUsers();
+      res.status(200).json({ message: "Success", data: employees });
+    } else {
+      res.status(401).json({
+        message:
+          "You do not have access to this area. Please contact support. ",
+      });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Server Error", error_message: error.message });
+  }
+});
+
 //account update
 router.put("/account/:userId", validator, async (req, res) => {
   const { userId } = req.params;
