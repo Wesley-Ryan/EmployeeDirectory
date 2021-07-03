@@ -54,6 +54,35 @@ router.get("/admin/employees/all", validator, async (req, res) => {
   }
 });
 
+//get 1 account
+
+router.get("/account/:userId", validator, async (req, res) => {
+  const { userId } = req.params;
+  const userAccount = parseInt(userId);
+  const { role, id } = req.Decoded;
+
+  try {
+    const [user] = await UserHelper.findUserByID(userAccount);
+    if (!user) {
+      res.status(400).json({
+        message: "Requested User does not exist.",
+      });
+    } else if (id === userAccount || role < 3893) {
+      res.status(200).json({ message: "Success", data: user });
+    } else {
+      res.status(401).json({
+        message: "You do not have permission to access this account.",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Error on Server, changes not accepted please contact support with error message.",
+      error_message: error.message,
+    });
+  }
+});
+
 //account update
 router.put("/account/:userId", validator, async (req, res) => {
   const { userId } = req.params;
