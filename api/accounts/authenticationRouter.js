@@ -9,6 +9,7 @@ const {
   validateLoginPayload,
   validator,
   validateUserRecovery,
+  validatePasswordReset,
 } = require("../middlewares/validationMiddleware.js");
 
 const SessionHelper = require("../models/sessionModel.js");
@@ -73,5 +74,15 @@ router.post("/account/send/help", validateUserRecovery, (req, res) => {
     .status(200)
     .json({ message: "Success, please check your email account." });
 });
+
+//verify code and reset pw
+router.post(
+  "/account/recovery/challenge",
+  validatePasswordReset,
+  (req, res) => {
+    const user = req.User;
+    res.status(200).json(user);
+  }
+);
 
 module.exports = router;

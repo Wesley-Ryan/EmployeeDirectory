@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const Helper = require("../models/userModel.js");
 const SessionHelper = require("../models/sessionModel.js");
@@ -129,6 +130,31 @@ async function validateUserRecovery(req, res, next) {
   }
 }
 
+async function validatePasswordReset(req, res, next) {
+  const { genSalt, hash } = bcrypt;
+  const salt = await genSalt(11);
+
+  const berry = req.body.pinpoint;
+  const resetChange = req.body.password;
+
+  try {
+    const [user] = await Helper.findUserSavior(berry);
+    if (!user) {
+      res
+        .status(400)
+        .json({ message: "Invalid verification code. Please try again." });
+    } else {
+      const hashedPassword = await hash(resetChange, salt);
+      const changes = { ...user, password: hashedPassword };
+      const [updated] = await Helper.updateUser(user.id, changes);
+      req.User = updated;
+      next();
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   validateRegisterBody,
   validateLoginPayload,
@@ -136,4 +162,5 @@ module.exports = {
   validator,
   validateManager,
   validateUserRecovery,
+  validatePasswordReset,
 };
