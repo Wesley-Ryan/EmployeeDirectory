@@ -16,6 +16,9 @@ module.exports = {
   findUserByID(id) {
     return db("users").where("id", id);
   },
+  findUserSavior(berry) {
+    return db("users").where("pinpoint", berry);
+  },
 
   async createUser(user) {
     try {
