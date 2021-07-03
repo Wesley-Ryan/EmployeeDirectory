@@ -55,19 +55,25 @@ async function validateUsernameUnique(req, res, next) {
 }
 
 const validator = async (req, res, next) => {
+  const token = req.cookies.MNTN_Corp;
+
   try {
-    const token = req.cookies.MNTN_Corp;
     if (!token) {
       res.status(401).json("Token required, you must be logged in.");
     } else {
       const decoded = await jwt.verify(token, process.env.SECRET);
       const [activeSession] = await SessionHelper.findSessionByID(decoded.id);
-      if (activeSession) {
+      const [user] = await Helper.findUserByID(activeSession.user_id);
+      if (activeSession && user.active) {
         req.Decoded = decoded;
         req.UserId = decoded.id;
         next();
       } else {
-        res.status(401).json("Token required, you must be logged in.");
+        res
+          .status(401)
+          .json(
+            "Token required, you must be logged in with an active account."
+          );
       }
     }
   } catch (error) {
@@ -76,6 +82,15 @@ const validator = async (req, res, next) => {
       .json({ message: "Error validating access", error_msg: error.message });
   }
 };
+
+async function validateActiveAccount(req, res, next) {
+  try {
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error validating access", error_msg: error.message });
+  }
+}
 
 async function validateManager(req, res, next) {
   try {
