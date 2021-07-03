@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const Helper = require("../models/userModel.js");
 const SessionHelper = require("../models/sessionModel.js");
 
+const { createBerry, sendHelp } = require("../auth/accountRescue.js");
+
 async function validateLoginPayload(req, res, next) {
   try {
     const user = req.body;
@@ -94,10 +96,44 @@ async function validateManager(req, res, next) {
   }
 }
 
+async function validateUserRecovery(req, res, next) {
+  const { email } = req.body;
+  try {
+    //find user by email
+    const [user] = await Helper.findUserByEmail(email);
+
+    if (!user) {
+      res.status(400).json({
+        message:
+          "We were unable to locate the requested user, please contact support. *INVALID ACCOUNT REQUEST* ",
+      });
+    } else {
+      const berry = createBerry();
+      const changes = { ...user, pinpoint: berry };
+      const savior = {
+        user: user.email,
+        first_name: user.first_name,
+        verification: berry,
+      };
+      await Helper.updateUser(user.id, changes);
+      req.User = changes;
+      sendHelp(savior.user, savior.first_name, savior.verification);
+      next();
+    }
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "There was an issue retrieving your account details, please contact support.",
+      err_message: error.message,
+    });
+  }
+}
+
 module.exports = {
   validateRegisterBody,
   validateLoginPayload,
   validateUsernameUnique,
   validator,
   validateManager,
+  validateUserRecovery,
 };

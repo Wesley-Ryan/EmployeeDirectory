@@ -8,6 +8,7 @@ const {
   validateUsernameUnique,
   validateLoginPayload,
   validator,
+  validateUserRecovery,
 } = require("../middlewares/validationMiddleware.js");
 
 const SessionHelper = require("../models/sessionModel.js");
@@ -64,6 +65,13 @@ router.post("/logout", validator, async (req, res) => {
       error_message: error.message,
     });
   }
+});
+
+//create and send password reset code.
+router.post("/account/send/help", validateUserRecovery, (req, res) => {
+  res
+    .status(200)
+    .json({ message: "Success, please check your email account." });
 });
 
 module.exports = router;

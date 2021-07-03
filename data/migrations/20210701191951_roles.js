@@ -34,7 +34,7 @@ exports.up = function (knex) {
         .inTable("departments")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
-      users.integer("pinpoint");
+      users.string("pinpoint");
       users.boolean("active").notNullable().defaultTo(1);
     })
     .createTable("sessions", (session) => {
