@@ -9,7 +9,7 @@ const employeeRouter = require("./routes/employeeRouter.js");
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(cors({ credentials: true }));
 //app.use(morgan("common"));
 app.use(cookieParser());
 app.use(express.json());
