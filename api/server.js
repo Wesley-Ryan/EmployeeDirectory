@@ -6,10 +6,20 @@ const cookieParser = require("cookie-parser");
 
 const authRouter = require("./accounts/authenticationRouter.js");
 const employeeRouter = require("./routes/employeeRouter.js");
+
+const whitelist = ["http://localhost:8080", "http://example.com"];
+const corsOptions = {
+  credentials: true,
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin)) return callback(null, true);
+
+    callback(new Error("Not allowed by CORS"));
+  },
+};
 const app = express();
 
 app.use(helmet());
-app.use(cors({ credentials: true }));
+app.use(cors(corsOptions));
 //app.use(morgan("common"));
 app.use(cookieParser());
 app.use(express.json());
