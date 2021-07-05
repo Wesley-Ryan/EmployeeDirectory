@@ -55,8 +55,7 @@ async function validateUsernameUnique(req, res, next) {
 }
 
 const validator = async (req, res, next) => {
-  const token = req.cookies.MNTN_Corp;
-
+  const token = req.headers.authorization;
   try {
     if (!token) {
       res.status(401).json("Token required, you must be logged in.");
