@@ -63,12 +63,14 @@ router.get("/account/:userId", validator, async (req, res) => {
 
   try {
     const [user] = await UserHelper.findUserByID(userAccount);
+    const [roleName] = await UserHelper.findRole(user.role);
     if (!user) {
       res.status(400).json({
         message: "Requested User does not exist.",
       });
     } else if (id === userAccount || role < 3893) {
-      res.status(200).json({ message: "Success", data: user });
+      const success = { ...user, password: null, role_name: roleName.name };
+      res.status(200).json({ message: "Success", data: success });
     } else {
       res.status(401).json({
         message: "You do not have permission to access this account.",
@@ -92,16 +94,22 @@ router.put("/account/:userId", validator, async (req, res) => {
 
   try {
     const [user] = await UserHelper.findUserByID(userId);
+    const [roleName] = await UserHelper.findRole(user.role);
     if (!user) {
       res.status(400).json({
         message:
           "Requested User does not exist, please be sure the email is correct.",
       });
     } else if (id === userAccount || role === 1328) {
-      const updatedUser = await UserHelper.updateUser(id, changes);
+      const [updatedUser] = await UserHelper.updateUser(userId, changes);
+      const success = {
+        ...updatedUser,
+        password: null,
+        role_name: roleName.name,
+      };
       res
         .status(201)
-        .json({ message: "Account updated successfully.", data: updatedUser });
+        .json({ message: "Account updated successfully.", data: success });
     } else {
       res.status(401).json({
         message: "You do not have permission to edit this account.",
