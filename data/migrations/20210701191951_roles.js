@@ -15,7 +15,9 @@ exports.up = function (knex) {
       users.string("email", 255).notNullable().unique();
       users.string("password", 255).notNullable();
       users.integer("login_attempts");
-
+      users.string("avatar");
+      users.string("role_name");
+      users.string("department_name");
       users.string("title", 255);
       users.string("salary");
       users

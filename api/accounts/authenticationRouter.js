@@ -22,9 +22,8 @@ router.post(
   validateUsernameUnique,
   async (req, res) => {
     try {
-      const result = await registerUser(req.User);
-      console.log("RESULT", result);
-      res.status(201).json({ message: result });
+      await registerUser(req.User);
+      res.status(201).json({ message: "Login Success" });
     } catch (error) {
       res.status(500).json({
         message: "Server Error in Post Route",
