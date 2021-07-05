@@ -10,6 +10,7 @@ async function loginUser(user, req, res) {
   await createSession(user.id, connectionInfo);
   const accessToken = generateToken(user);
   res.cookie(`MNTN_Corp`, accessToken, cookieConfig);
+  return accessToken;
 }
 
 module.exports = loginUser;

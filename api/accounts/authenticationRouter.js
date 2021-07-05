@@ -41,8 +41,10 @@ router.post("/login", validateLoginPayload, async (req, res) => {
     );
     if (isAuthorized) {
       console.log("Golden,", message);
-      await loginUser(currentUser, req, res);
-      res.status(200).json({ message: message });
+      const returned = await loginUser(currentUser, req, res);
+      res
+        .status(200)
+        .json({ message: message, data: { token: returned, id: req.User.id } });
     } else {
       console.log("Not Golden,", message);
       res.status(401).json({ message: message });
