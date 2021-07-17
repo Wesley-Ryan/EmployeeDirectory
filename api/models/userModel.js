@@ -10,6 +10,7 @@ module.exports = {
     return allUsers.map((employee) => {
       const employeeGeneralInfo = {
         id: employee.id,
+        avatar: employee.avatar,
         first_name: employee.first_name,
         last_name: employee.last_name,
         email: employee.email,
@@ -31,6 +32,7 @@ module.exports = {
         title: employee.title,
         department: employee.department,
         department_name: employee.department_name,
+        avatar: employee.avatar,
       };
       return employeeGeneralInfo;
     });
