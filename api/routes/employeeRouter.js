@@ -105,8 +105,22 @@ router.get("/account/:userId", validator, async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
-      message:
-        "Error on Server, changes not accepted please contact support with error message.",
+      message: "Error on Server, unable to locate account.",
+      error_message: error.message,
+    });
+  }
+});
+
+//get current User
+router.get("/account/current-user", validator, async (req, res) => {
+  const { id } = req.Decoded;
+  try {
+    const [user] = await UserHelper.findUserByID(id);
+    const success = { ...user, password: null };
+    res.status(200).json({ message: "Success", data: success });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error on Server, unable to locate account.",
       error_message: error.message,
     });
   }
