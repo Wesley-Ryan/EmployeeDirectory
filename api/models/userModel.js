@@ -17,6 +17,7 @@ module.exports = {
         title: employee.title,
         department: employee.department,
         department_name: employee.department_name,
+        active: employee.active,
       };
       return employeeGeneralInfo;
     });
@@ -33,6 +34,7 @@ module.exports = {
         department: employee.department,
         department_name: employee.department_name,
         avatar: employee.avatar,
+        active: employee.active,
       };
       return employeeGeneralInfo;
     });
