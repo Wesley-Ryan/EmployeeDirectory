@@ -20,6 +20,7 @@ exports.up = function (knex) {
       users.string("department_name");
       users.string("title", 255);
       users.string("salary");
+      users.integer("profile");
       users
         .integer("role")
         .unsigned()
