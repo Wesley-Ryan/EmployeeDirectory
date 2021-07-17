@@ -1,6 +1,6 @@
 const express = require("express");
 const helmet = require("helmet");
-const morgan = require("morgan");
+//const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
@@ -11,7 +11,7 @@ const app = express();
 
 app.use(helmet());
 app.use(cors());
-app.use(morgan("common"));
+//app.use(morgan("common"));
 app.use(cookieParser());
 app.use(express.json());
 

@@ -81,6 +81,22 @@ router.get("/admin/employees/all", validator, async (req, res) => {
   }
 });
 
+//get currentUser
+router.get("/account/current", validator, async (req, res) => {
+  const { id } = req.Decoded;
+
+  try {
+    const [user] = await UserHelper.findUserByID(id);
+    const currentUser = { ...user, password: null };
+    res.status(200).json({ message: "Success", user: currentUser });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error on Server, unable to locate account.",
+      error_message: error.message,
+    });
+  }
+});
+
 //get 1 account
 
 router.get("/account/:userId", validator, async (req, res) => {
