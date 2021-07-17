@@ -48,9 +48,9 @@ router.get("/employees/general/:department", validator, async (req, res) => {
   }
 });
 //get all accounts General Info
-router.get("/employees/general/all", validator, async (req, res) => {
+router.get("/general/all", validator, async (req, res) => {
+  const employees = await UserHelper.getAllUsersGeneralInfo();
   try {
-    const employees = await UserHelper.getAllUsersGeneralInfo();
     res
       .status(200)
       .json({ message: "Success with employees", data: employees });
